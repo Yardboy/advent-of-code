@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  bingo_web:
+    build:
+      context: ../
+    entrypoint: /var/www/app/docker/entrypoint.sh
+    container_name: "advent"
+    volumes:
+      - ../:/var/www/app
+      - bundle:/bundle
+    env_file: ../.env
+    environment:
+      BUNDLE_PATH: /bundle
+
+  advent_bundle:
+    image: busybox
+    container_name: "advent_bundle"
+    volumes:
+      - bundle:/bundle
+
+volumes:
+  bundle:
