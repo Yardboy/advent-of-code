@@ -1,6 +1,6 @@
 #! /usr/bin/ruby
 
-class Puzzle01a
+class Solution
   def initialize
     @input = []
     @value = 0
@@ -23,4 +23,4 @@ class Puzzle01a
   end
 end
 
-Puzzle01a.new.run!
+Solution.new.run!

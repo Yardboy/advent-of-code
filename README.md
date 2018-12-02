@@ -11,6 +11,6 @@ Run `bin/dev build` to build environment
 Run `bin/dev bash` to enter environment
 
 ## Running puzzle solutions
-Change into puzzle folder
+Change into desired puzzle folder
 
-Run `./puzzlennx` to run a puzzle soution
+Run `./solution.rb` to run the puzzle soution
