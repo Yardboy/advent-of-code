@@ -7,17 +7,33 @@ class Solution
   def initialize
     @input_lines = 0
     @input = []
+    @units = nil
   end
 
   def run!
     get_input #:test
-    @answer = react_polymer(@input)
+    get_units
+    process_reactions
 
     puts "Input Lines: #{@input_lines}"
-    puts "Answer: #{@answer.join.size}"
+    puts "Answer: #{@units.map(&:last).min}"
   end
 
   private
+
+  def process_reactions
+    @units.each do |data|
+      unit_input = @input.dup
+      unit_input.delete(data[0])
+      unit_input.delete(data[0].upcase)
+      polymer = react_polymer(unit_input)
+      data[1] = polymer.size
+    end
+  end
+
+  def get_units
+    @units = @input.map(&:downcase).uniq.map { |x| [x, 0] }
+  end
 
   def react_polymer(polymer)
     reacted = []
