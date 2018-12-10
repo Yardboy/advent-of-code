@@ -85,7 +85,7 @@ class Solution
     @current_player = @players.size - 1
 
     i = 1
-    while i <= @input[6].to_i do
+    while i <= @input[6].to_i * 100 do
       play_marble(i)
       i += 1
     end
