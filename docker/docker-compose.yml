@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  bingo_web:
+  advent:
     build:
       context: ../
     entrypoint: /var/www/app/docker/entrypoint.sh

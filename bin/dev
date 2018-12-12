@@ -1,7 +1,7 @@
 #!/bin/bash
 
 export COMPOSE_FILE=docker/docker-compose.yml
-SERVICE=bingo_web
+SERVICE=advent
 
 case "$1" in
   bash)
