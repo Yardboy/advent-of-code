@@ -11,47 +11,36 @@ class Recipe
   end
 end
 
-class Batch
-  attr_reader :current, :head, :tail
-
+class RecipeList
+  attr_reader :count
+  
   def initialize
     @head = nil
     @tail = nil
-    @current = nil
+    @count = 0
   end
 
-  def insert_after_current(value)
+  def add_recipe(value)
+    new_recipe = Recipe.new(value)
     if @head
-      old_next = @current.next
-      @current.next = Recipe.new(value)
-      @current.next.next = old_next
-      @current.next.prev = @current
-      old_next.prev = @current.next if old_next
-      @tail = @current.next if current_is_tail?
+      new_recipe.prev = @tail
+      @tail = @tail.next = new_recipe
     else
-      @current = Recipe.new(value)
-      @tail = @head = @current
+      @tail = @head = new_recipe
     end
+    @count += 1
+    new_recipe
   end
 
-  def current_is_tail?
-    @current == @tail
-  end
-
-  def move(steps)
+  def move(recipe, steps)
     steps.abs.times do
       if steps.positive?
-        @current = @current.next || @head
+        recipe = recipe.next || @head
       else
-        @current = @current.prev || @tail
+        recipe = recipe.prev || @tail
       end
     end
-  end
-
-  def remove_current
-    @current.prev.next = @current.next
-    @current.next.prev = @current.prev
-    @current = @current.next
+    recipe
   end
 
   def to_s
@@ -68,60 +57,52 @@ class Solution
   class NoTestInputError < StandardError; end
   
   def initialize
-    @input_lines = 0
     @input = []
-    @recipes = 0
-    @target = nil
-    @batch = Batch.new
-    @current = ''
+    @answer = nil
+    @latest = ''
+    @list = RecipeList.new
   end
 
   def run!
     get_input #:test
 
-    add_recipe(3)
-    @elf1 = @batch.current
-    add_recipe(7)
-    @elf2 = @batch.current
+    @elf1 = add_recipe(3)
+    @elf2 = add_recipe(7)
 
-    while @target.nil?
+    while @answer.nil?
       add_new_recipes
     end
 
-    @answer = @target - @input.size
-
-    puts "Input Lines: #{@input_lines}"
-    puts "Answer: #{@answer}"
+    puts "Answer: #{@answer - @input.size}"
   end
 
   private
 
   def add_new_recipes
-    (@elf1.value + @elf2.value).to_s.split('').map(&:to_i).each do |new_recipe|
+    new_recipe_values.each do |new_recipe|
       add_recipe(new_recipe)
     end
-    (1 + @elf1.value).times do
-      @elf1 = @elf1.next || @batch.head
-    end
-    (1 + @elf2.value).times do
-      @elf2 = @elf2.next || @batch.head
-    end
+    @elf1 = @list.move(@elf1, 1 + @elf1.value)
+    @elf2 = @list.move(@elf2, 1 + @elf2.value)
+  end
+
+  def new_recipe_values
+    (@elf1.value + @elf2.value).to_s.split('').map(&:to_i)
   end
 
   def add_recipe(value)
-    @batch.insert_after_current(value)
-    @batch.move(1)
-    @recipes += 1
-    update_current(value)
-    if @current == @input
-      @target = @recipes
+    recipe = @list.add_recipe(value)
+    update_latest(value)
+    if @latest == @input
+      @answer = @list.count
     end
+    recipe
   end
 
-  def update_current(value)
-    @current += value.to_s
-    while @current.size > @input.size
-      @current = @current.slice(1..-1)
+  def update_latest(value)
+    @latest += value.to_s
+    while @latest.size > @input.size
+      @latest = @latest.slice(1..-1)
     end
   end
 
