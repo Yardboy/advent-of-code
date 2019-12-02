@@ -1,5 +1,5 @@
-# advent2018
-My Advent of Code 2018 programs
+# advent-of-code
+My Advent of Code 2018-2019 programs
 
 _Note: I simply took a swing at each puzzle and worked it till I got the answer, with no further tweaking or refactoring._
 
@@ -10,7 +10,7 @@ _So... these are not necessarily the best solutions, but they are mine, and they
 ## Setup
 _Requires Docker_
 
-Change into advent2018 folder
+Change into advent-of-code folder
 
 Run `bin/dev build` to build environment
 
