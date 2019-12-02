@@ -1,23 +1,24 @@
-version: '3'
+version: '3.7'
 
 services:
   advent:
     build:
       context: ../
-    entrypoint: /var/www/app/docker/entrypoint.sh
+    entrypoint: /app/docker/entrypoint.sh
     container_name: "advent"
     volumes:
-      - ../:/var/www/app
-      - bundle:/bundle
+      - ../:/app
+      - advent_bundle:/bundle
     env_file: ../.env
     environment:
       BUNDLE_PATH: /bundle
+      BUNDLE_SILENCE_ROOT_WARNING: 1
 
   advent_bundle:
     image: busybox
     container_name: "advent_bundle"
     volumes:
-      - bundle:/bundle
+      - advent_bundle:/bundle
 
 volumes:
-  bundle:
+  advent_bundle:

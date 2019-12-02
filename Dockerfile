@@ -1,19 +1,15 @@
-FROM aptible/ruby:2.5-ubuntu-16.04
+FROM ruby:2.6.5
+
+LABEL app-name="advent"
 
 RUN apt-get update -qq && \
     apt-get install -y \
       vim
 
-# Set an environment variable to avoid repetition
-ENV APP_HOME /var/www/app
-ENV HOME /root
-
-# Set the working directory
+# Create and set the working directory
+ENV APP_HOME /app
+RUN mkdir $APP_HOME
 WORKDIR $APP_HOME
 
-# Install gems
-ADD Gemfile* $APP_HOME/
-RUN bundle install
-
 # COPY app to container
-ADD . $APP_HOME
+COPY . $APP_HOME
