@@ -1,4 +1,5 @@
 #!/usr/local/bin/ruby
+require '../solution2019'
 
 class Point
   CONTROLS = {
@@ -45,8 +46,6 @@ class Point
     end
   end
 end
-
-require '../solution2019'
 
 class Solution < Solution2019
   private
