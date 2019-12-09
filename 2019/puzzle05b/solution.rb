@@ -6,7 +6,7 @@ class Solution < Solution2019
   private
 
   def process_input
-    @answer = Intcode.new.run!(5, @test)
+    @answer = Intcode::Computer.new.run!(5, @test)
   end
 end
 

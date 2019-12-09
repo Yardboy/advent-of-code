@@ -28,7 +28,7 @@ class Solution < Solution2019
 
   def clear_amps
     @amps = []
-    5.times { @amps << Intcode.new }
+    5.times { @amps << Intcode::Computer.new }
   end
 
   def first_run(phases)

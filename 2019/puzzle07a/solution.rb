@@ -24,7 +24,7 @@ class Solution < Solution2019
 
     input2 = 0
     settings.each do |phase|
-      input2 = Intcode.new.run!([phase, input2], @test)
+      input2 = Intcode::Computer.new.run!([phase, input2], @test)
     end
     input2
   end
