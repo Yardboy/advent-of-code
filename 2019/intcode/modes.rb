@@ -1,27 +1,29 @@
 module Intcode
+  class UnknownOpcodeModeError < StandardError; end
+
   module Modes
     def value_by_mode(parm)
       case opcode_modes[parm - 1]
       when 0
-        position_mode(parm)
+        position_mode_read(parm)
       when 1
-        immediate_mode(parm)
+        immediate_mode_read(parm)
       when 2
-        relative_mode(parm)
+        relative_mode_read(parm)
       else
-        raise StandardError
+        raise UnknownOpcodeModeError
       end
     end
 
-    def position_mode(parm)
+    def position_mode_read(parm)
       memory(memory(@position + parm))
     end
 
-    def immediate_mode(parm)
+    def immediate_mode_read(parm)
       memory(@position + parm)
     end
 
-    def relative_mode(parm)
+    def relative_mode_read(parm)
       memory(memory(@position + parm) + @relative_base)
     end
 
@@ -29,11 +31,11 @@ module Intcode
       if opcode_modes[parm - 1] == 2
         relative_mode_update(value, parm)
       else
-        immediate_mode_update(value, parm)
+        position_mode_update(value, parm)
       end
     end
 
-    def immediate_mode_update(value, parm)
+    def position_mode_update(value, parm)
       ensure_memory(memory(@position + parm))
       @input[memory(@position + parm)] = value
     end

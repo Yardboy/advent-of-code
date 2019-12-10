@@ -1,7 +1,4 @@
 class Solution2019
-  class UnknownActionError < StandardError; end
-  class NoTestInputError < StandardError; end
-
   def initialize
     @test = false
     @input = []
