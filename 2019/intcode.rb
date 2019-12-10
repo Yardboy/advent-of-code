@@ -1,31 +1,34 @@
 # Used in the following days:
+# Day 02a: 5290681
+# Day 02b: 5741
 # Day 05a: 12440243
 # Day 05b: 15486302
 # Day 07a: 51679
 # Day 07b: 19539216
 # Day 09a: 2465411646
+# Day 09b: 69781
 #
 require_relative 'intcode/opcodes'
 require_relative 'intcode/modes'
 require_relative 'intcode/memory'
 
 module Intcode
-  class Computer < Solution2019
+  class Computer
     include Opcodes
     include Modes
     include Memory
 
-    attr_reader :state, :position
+    attr_reader :state, :position, :input
+
+    def initialize(input)
+      @input = input
+    end
 
     # override
     def run!(user_inputs, test = false)
       @user_inputs = Array(user_inputs)
       @test = test
-      @state = 'running'
-      @position = 0
-      @relative_base = 0
-      @debug = false
-      read_input
+      initial_setup
       process_input
     end
 
@@ -36,6 +39,13 @@ module Intcode
     end
 
     private
+
+    def initial_setup
+      @state = 'running'
+      @position = 0
+      @relative_base = 0
+      @debug = false
+    end
 
     def process_input
       while @state == 'running'
@@ -65,12 +75,6 @@ module Intcode
 
     def user_input
       @user_inputs.shift
-    end
-
-    # override
-    def read_input
-      super
-      @input = @input.first.split(',').map(&:to_i)
     end
   end
 end

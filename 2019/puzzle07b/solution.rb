@@ -28,7 +28,7 @@ class Solution < Solution2019
 
   def clear_amps
     @amps = []
-    5.times { @amps << Intcode::Computer.new }
+    5.times { @amps << Intcode::Computer.new(@input) }
   end
 
   def first_run(phases)
@@ -45,6 +45,12 @@ class Solution < Solution2019
       @amps.unshift(@amps.pop)
     end
     signal
+  end
+
+  # override
+  def read_input
+    super
+    @input = @input.first.split(',').map(&:to_i)
   end
 end
 

@@ -24,9 +24,15 @@ class Solution < Solution2019
 
     input2 = 0
     settings.each do |phase|
-      input2 = Intcode::Computer.new.run!([phase, input2], @test)
+      input2 = Intcode::Computer.new(@input).run!([phase, input2], @test)
     end
     input2
+  end
+
+  # override
+  def read_input
+    super
+    @input = @input.first.split(',').map(&:to_i)
   end
 end
 
