@@ -29,8 +29,12 @@ class Solution < Solution2019
 
   def sort_slopes
     @slopes = @answer[2]
-    @slopes.each { |_, asteroids| asteroids.reverse! }
+    @slopes.each { |_, asteroids| asteroids.reverse! if before_station?(asteroids.first) }
     @slopes = @slopes.to_a.sort_by { |(slope, quadrant), _| [quadrant, slope] }.reverse
+  end
+
+  def before_station?(asteroid)
+    asteroid[1] < @answer.first[1] || (asteroid[1] == @answer.first[1] && asteroid[0] < @answer.first[0])
   end
 
   def determine_slopes(asteroid)
