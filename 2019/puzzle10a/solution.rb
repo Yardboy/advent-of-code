@@ -44,9 +44,7 @@ class Solution < Solution2019
   private
 
   def process_input
-    @answer = [nil, 0]
-    @answer = find_best_station
-    @answer.delete_at(1)
+    @answer = find_best_station[2]
   end
 
   def find_best_station

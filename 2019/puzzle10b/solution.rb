@@ -44,8 +44,7 @@ class Solution < Solution2019
   private
 
   def process_input
-    @answer = [nil, 0]
-    @station, @paths, @answer = find_best_station
+    @station, @paths = find_best_station[0..1]
     @answer = vaporized[199]
     @answer = @answer[0] * 100 + @answer[1]
   end
@@ -53,7 +52,7 @@ class Solution < Solution2019
   def vaporized
     sort_paths
     vaporized = []
-    until @paths.all? { |_, asteroids| asteroids.empty? } do
+    until @paths.all? { |_, asteroids| asteroids.empty? }
       @paths.each do |_, asteroids|
         vaporized << asteroids.shift unless asteroids.empty?
       end
