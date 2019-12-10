@@ -16,9 +16,9 @@ class Solution < Solution2019
   def determine_slopes(asteroid)
     (@asteroids - [asteroid]).each do |station|
       slope = slope(station, asteroid)
-      signs = signs(station, asteroid)
-      @slopes[[slope, signs]] ||= []
-      @slopes[[slope, signs]] << station
+      quadrant = quadrants[signs(station, asteroid)]
+      @slopes[[slope, quadrant]] ||= []
+      @slopes[[slope, quadrant]] << station
     end
   end
 
@@ -32,6 +32,15 @@ class Solution < Solution2019
 
   def sign_of(value)
     '++-'[value <=> 0]
+  end
+
+  def quadrants
+    {
+      '--' => 0,
+      '+-' => 1,
+      '++' => 2,
+      '-+' => 3
+    }
   end
 
   # override
