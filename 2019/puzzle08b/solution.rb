@@ -8,12 +8,8 @@ class Solution < Solution2019
   def process_input
     @width = 25
     @height = 6
-    @image = Array.new(@height){Array.new(@width)}
+    @image = Array.new(@height) { Array.new(@width) }
     find_top_pixels
-    set_answer
-  end
-
-  def set_answer
     @answer = "\n" + @image.map { |row| row.join('') }.join("\n")
   end
 

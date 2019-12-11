@@ -15,7 +15,7 @@ class Solution < Solution2019
         phase = values
       end
     end
-    @answer = [@answer, phase]
+    # @answer = [@answer, phase] # if you want to see the phase setting
   end
 
   def run_amps(values)
@@ -28,29 +28,23 @@ class Solution < Solution2019
 
   def clear_amps
     @amps = []
-    5.times { @amps << Intcode::Computer.new(@input) }
+    5.times { @amps << Intcode::Computer.new(@input.first) }
   end
 
   def first_run(phases)
     signal = 0
     phases.each_with_index do |phase, index|
-      signal = @amps[index].run!([phase, signal], @test)
+      signal = @amps[index].run!([phase, signal], @test).last
     end
     signal
   end
 
   def feedback_loop(signal)
-    while @amps.any? { |amp| amp.state != 'done' }
-      signal = @amps.first.restart!(signal)
+    while @amps.any? { |amp| !amp.done? }
+      signal = @amps.first.restart!(signal).last
       @amps.unshift(@amps.pop)
     end
     signal
-  end
-
-  # override
-  def read_input
-    super
-    @input = @input.first.split(',').map(&:to_i)
   end
 end
 
