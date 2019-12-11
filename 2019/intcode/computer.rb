@@ -4,10 +4,10 @@ module Intcode
     include Modes
     include Memory
 
-    attr_reader :state, :position, :input
+    attr_reader :position, :input
 
     def initialize(input)
-      @input = input
+      @input = input.split(',').map(&:to_i)
     end
 
     # override
@@ -24,17 +24,25 @@ module Intcode
       process_input
     end
 
+    %w[running waiting done].each do |mthd|
+      define_method "#{mthd}?" do
+        @state == mthd
+      end
+    end
+
     private
 
     def initial_setup
+      @answer = []
       @state = 'running'
       @position = 0
       @relative_base = 0
       @debug = false
+      @outputs = []
     end
 
     def process_input
-      while @state == 'running'
+      while running?
         puts "Instruction: #{opcode}" if @debug
         send "opcode#{opcode_instruction}"
       end
