@@ -9,11 +9,14 @@ class Solution2019
   def run!(test = false)
     @test = test
     read_input
+    additional_setup
     process_input
     show_answer
   end
 
   private
+
+  def additional_setup; end
 
   def show_answer
     puts "Input Lines: #{@input_lines}"

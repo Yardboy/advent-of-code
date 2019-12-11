@@ -77,10 +77,13 @@ end
 class Solution < Solution2019
   private
 
-  def process_input
+  # override
+  def additional_setup
     @tree = Tree.new
-    build_tree
+  end
 
+  def process_input
+    build_tree
     @answer = @tree.between('YOU', 'SAN') - 2
   end
 

@@ -5,17 +5,17 @@ require '../intcode'
 class Solution < Solution2019
   private
 
+  # override
+  def additional_setup
+    @answer = [0, nil]
+  end
+
   def process_input
-    @answer = 0
-    phase = []
     (1234..43_210).each do |settings|
       value = run_amps(settings)
-      if value > @answer
-        @answer = value
-        phase = settings
-      end
+      @answer = [value, settings] if value > @answer[0]
     end
-    # @answer = [@answer, phase] # if you want to see the phase setting
+    @answer = @answer[0] # comment out if you want to see the phase setting
   end
 
   def run_amps(settings)

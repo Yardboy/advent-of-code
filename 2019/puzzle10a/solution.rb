@@ -43,6 +43,16 @@ end
 class Solution < Solution2019
   private
 
+  # override
+  def additional_setup
+    @asteroids = []
+    @input.each_with_index do |line, row|
+      line.split('').each_with_index do |char, col|
+        @asteroids << Asteroid.new(col, row) if char == '#'
+      end
+    end
+  end
+
   def process_input
     @answer = find_best_station[2]
   end
@@ -61,17 +71,6 @@ class Solution < Solution2019
       path = Path.new(station, asteroid)
       hsh[path.key] ||= []
       hsh[path.key] << station
-    end
-  end
-
-  # override
-  def read_input
-    super
-    @asteroids = []
-    @input.each_with_index do |line, row|
-      line.split('').each_with_index do |char, col|
-        @asteroids << Asteroid.new(col, row) if char == '#'
-      end
     end
   end
 end

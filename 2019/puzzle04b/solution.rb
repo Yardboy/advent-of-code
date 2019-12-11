@@ -4,8 +4,12 @@ require '../solution2019'
 class Solution < Solution2019
   private
 
-  def process_input
+  # override
+  def additional_setup
     @answer = []
+  end
+
+  def process_input
     @input.each do |password|
       @answer << password if valid?(password.to_s)
     end

@@ -5,10 +5,14 @@ require '../solution2019'
 class Solution < Solution2019
   private
 
-  def process_input
+  # override
+  def additional_setup
     @width = 25
     @height = 6
     @image = Array.new(@height) { Array.new(@width) }
+  end
+
+  def process_input
     find_top_pixels
     @answer = "\n" + @image.map { |row| row.join('') }.join("\n")
   end

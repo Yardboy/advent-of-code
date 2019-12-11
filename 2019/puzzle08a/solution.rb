@@ -5,13 +5,13 @@ require '../solution2019'
 class Solution < Solution2019
   private
 
-  def process_input
+  # override
+  def additional_setup
     @width = 25
     @height = 6
-    find_fewest_zeroes
   end
 
-  def find_fewest_zeroes
+  def process_input
     min = nil
     summary.each do |hsh|
       if min.nil? || hsh[0] < min

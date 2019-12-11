@@ -7,8 +7,15 @@ class Solution < Solution2019
 
   private
 
+  # override
+  def additional_setup
+    @posx = @posy = 0
+    @panels = {}
+    @heading = :u
+    @start_color = 1 # start on a white panel
+  end
+
   def process_input
-    initial_setup
     until computer.done?
       new_color, direction = run_computer(current_color)[-2..-1]
       paint!(new_color)
@@ -16,13 +23,6 @@ class Solution < Solution2019
       move!(1)
     end
     @answer = "\n" + panel_data.map { |row| row.join('') }.join("\n")
-  end
-
-  def initial_setup
-    @posx = @posy = 0
-    @panels = {}
-    @heading = :u
-    @start_color = 1 # start on a white panel
   end
 
   def panel_data

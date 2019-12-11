@@ -49,8 +49,13 @@ end
 class Solution < Solution2019
   private
 
+  # override
+  def additional_setup
+    @point = Point.new
+    @paths = []
+  end
+
   def process_input
-    additional_setup
     determine_paths
     calculate_distances
   end
@@ -73,11 +78,6 @@ class Solution < Solution2019
       line.split(',').each { |instruction| @point.move(instruction) }
       @paths << @point.path
     end
-  end
-
-  def additional_setup
-    @point = Point.new
-    @paths = []
   end
 end
 

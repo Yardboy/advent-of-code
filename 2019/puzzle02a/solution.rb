@@ -6,8 +6,12 @@ require '../intcode'
 class Solution < Solution2019
   private
 
-  def process_input
+  # override
+  def additional_setup
     @input = @input.first
+  end
+
+  def process_input
     update_input
     computer.run!(nil, @test)
     @answer = computer.input.first

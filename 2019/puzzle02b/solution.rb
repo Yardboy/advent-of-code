@@ -6,8 +6,12 @@ require '../intcode'
 class Solution < Solution2019
   private
 
-  def process_input
+  # override
+  def additional_setup
     @input = @input.first
+  end
+
+  def process_input
     (0..99).each do |noun|
       (0..99).each do |verb|
         update_input(noun, verb)

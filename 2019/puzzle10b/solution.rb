@@ -43,21 +43,30 @@ end
 class Solution < Solution2019
   private
 
-  def process_input
-    @station, @paths = find_best_station[0..1]
-    @answer = vaporized[199]
-    @answer = @answer[0] * 100 + @answer[1]
-  end
-
-  def vaporized
-    sort_paths
-    vaporized = []
-    until @paths.all? { |_, asteroids| asteroids.empty? }
-      @paths.each do |_, asteroids|
-        vaporized << asteroids.shift unless asteroids.empty?
+  # override
+  def additional_setup
+    @asteroids = []
+    @input.each_with_index do |line, row|
+      line.split('').each_with_index do |char, col|
+        @asteroids << Asteroid.new(col, row) if char == '#'
       end
     end
-    vaporized
+    @vaporized = []
+  end
+
+  def process_input
+    @station, @paths = find_best_station[0..1]
+    vaporize!
+    @answer = @vaporized[199][0] * 100 + @vaporized[199][1]
+  end
+
+  def vaporize!
+    sort_paths
+    until @paths.all? { |_, asteroids| asteroids.empty? }
+      @paths.each do |_, asteroids|
+        @vaporized << asteroids.shift unless asteroids.empty?
+      end
+    end
   end
 
   def find_best_station
@@ -79,17 +88,6 @@ class Solution < Solution2019
       path = Path.new(station, asteroid)
       hsh[path.key] ||= []
       hsh[path.key] << station
-    end
-  end
-
-  # override
-  def read_input
-    super
-    @asteroids = []
-    @input.each_with_index do |line, row|
-      line.split('').each_with_index do |char, col|
-        @asteroids << Asteroid.new(col, row) if char == '#'
-      end
     end
   end
 end

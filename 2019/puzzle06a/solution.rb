@@ -55,13 +55,15 @@ end
 class Solution < Solution2019
   private
 
+  # override
+  def additional_setup
+    @tree = Tree.new
+  end
+
   def process_input
-    tree = Tree.new
-
-    @input.each { |node_id, parent_id| tree.add_node(node_id, parent_id) }
-    tree.update_orbits
-
-    @answer = tree.orbits
+    @input.each { |node_id, parent_id| @tree.add_node(node_id, parent_id) }
+    @tree.update_orbits
+    @answer = @tree.orbits
   end
 
   # override
