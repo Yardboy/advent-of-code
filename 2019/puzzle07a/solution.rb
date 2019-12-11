@@ -15,7 +15,7 @@ class Solution < Solution2019
         phase = settings
       end
     end
-    @answer = [@answer, phase]
+    # @answer = [@answer, phase] # if you want to see the phase setting
   end
 
   def run_amps(settings)
@@ -24,15 +24,9 @@ class Solution < Solution2019
 
     input2 = 0
     settings.each do |phase|
-      input2 = Intcode::Computer.new(@input).run!([phase, input2], @test)
+      input2 = Intcode::Computer.new(@input.first).run!([phase, input2], @test).last
     end
     input2
-  end
-
-  # override
-  def read_input
-    super
-    @input = @input.first.split(',').map(&:to_i)
   end
 end
 

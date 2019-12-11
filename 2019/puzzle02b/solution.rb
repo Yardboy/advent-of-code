@@ -7,6 +7,7 @@ class Solution < Solution2019
   private
 
   def process_input
+    @input = @input.first
     (0..99).each do |noun|
       (0..99).each do |verb|
         update_input(noun, verb)
@@ -24,14 +25,10 @@ class Solution < Solution2019
   end
 
   def update_input(noun, verb)
+    @input = @input.split(',').map(&:to_i)
     @input[1] = noun
     @input[2] = verb
-  end
-
-  # override
-  def read_input
-    super
-    @input = @input.first.split(',').map(&:to_i)
+    @input = @input.join(',')
   end
 end
 

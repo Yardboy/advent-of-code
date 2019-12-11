@@ -6,13 +6,7 @@ class Solution < Solution2019
   private
 
   def process_input
-    @answer = Intcode::Computer.new(@input).run!(2, @test)
-  end
-
-  # override
-  def read_input
-    super
-    @input = @input.first.split(',').map(&:to_i)
+    @answer = Intcode::Computer.new(@input.first).run!(2, @test).last
   end
 end
 
