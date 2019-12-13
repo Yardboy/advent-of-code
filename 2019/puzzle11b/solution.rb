@@ -73,11 +73,11 @@ class Solution < Solution2019
   end
 
   def current_color
-    @panels[position] || 0
+    computer.waiting? ? @panels[position] || 0 : @start_color
   end
 
   def run_computer(input)
-    computer.waiting? ? computer.restart!(input) : computer.run!(@start_color, @test)
+    computer.run!(input, @test)
   end
 
   def computer

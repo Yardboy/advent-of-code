@@ -4,24 +4,27 @@ module Intcode
     include Modes
     include Memory
 
-    attr_reader :position, :input
+    attr_reader :position, :input, :outputs
 
     def initialize(input)
       @input = input.split(',').map(&:to_i)
+      @user_inputs = []
     end
 
     # override
     def run!(user_inputs, test = false)
-      @user_inputs = Array(user_inputs)
-      @test = test
-      initial_setup
+      @user_inputs += Array(user_inputs)
+      if waiting?
+        @state = 'running'
+      else
+        @test = test
+        initial_setup
+      end
       process_input
     end
 
-    def restart!(user_inputs)
-      @user_inputs += Array(user_inputs)
-      @state = 'running'
-      process_input
+    def clear_output!
+      @outputs = []
     end
 
     %w[running waiting done].each do |mthd|
@@ -33,7 +36,6 @@ module Intcode
     private
 
     def initial_setup
-      @answer = []
       @state = 'running'
       @position = 0
       @relative_base = 0
@@ -46,7 +48,7 @@ module Intcode
         puts "Instruction: #{opcode}" if @debug
         send "opcode#{opcode_instruction}"
       end
-      @answer
+      @outputs
     end
 
     def opcode
