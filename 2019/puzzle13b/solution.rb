@@ -121,7 +121,7 @@ class Solution < Solution2019
   def play_game
     @turns += 1
     show_turn_data if @debug
-    take_turn(action)
+    take_turn
     board.draw
     sleep(0.0075)
   end
@@ -150,9 +150,9 @@ class Solution < Solution2019
     board.on_paddle? || board.on_slope? || (board.ball[0] - board.paddle[0]).zero?
   end
 
-  def take_turn(joystick)
+  def take_turn
     computer.clear_output!
-    run_computer!(joystick)
+    run_computer!(action)
     board.take_turn(computer.outputs)
     @balls << board.ball
   end
