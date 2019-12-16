@@ -154,7 +154,6 @@ class Solution < Solution2019
     computer.clear_output!
     run_computer!(action)
     board.take_turn(computer.outputs)
-    @balls << board.ball
   end
 
   def update_input
