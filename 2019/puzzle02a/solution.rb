@@ -9,10 +9,10 @@ class Solution < Solution2019
   # override
   def additional_setup
     @input = @input.first
+    update_input
   end
 
   def process_input
-    update_input
     computer.run!(nil, @test)
     @answer = computer.input.first
   end

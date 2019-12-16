@@ -41,7 +41,7 @@ class Solution < Solution2019
 
   def feedback_loop(signal)
     while @amps.any? { |amp| !amp.done? }
-      signal = @amps.first.restart!(signal).last
+      signal = @amps.first.run!(signal).last
       @amps.unshift(@amps.pop)
     end
     signal

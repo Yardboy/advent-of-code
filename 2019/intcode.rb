@@ -9,6 +9,7 @@
 # Day 09b: 69781
 # Day 11a: 2339
 # Day 11b: PGUEPLPR
+# Day 13a: 226
 #
 require_relative 'intcode/opcodes'
 require_relative 'intcode/modes'

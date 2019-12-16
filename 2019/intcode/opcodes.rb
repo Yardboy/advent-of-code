@@ -26,7 +26,7 @@ module Intcode
     # output
     def opcode4
       puts "Output:      #{value_by_mode(1)}" if @debug
-      @answer << value_by_mode(1)
+      @outputs << value_by_mode(1)
       move_pointer(2)
     end
 
