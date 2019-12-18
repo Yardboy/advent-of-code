@@ -56,15 +56,11 @@ class Solution < Solution2019
   end
 
   def process_input
-    find_upper_bound
-    @answer = (@lower..@upper).bsearch { |i| demand_fuel(i) > @ore } - 1
-  end
-
-  def find_upper_bound
-    until demand_fuel(@upper) > @ore
-      @lower = @upper
-      @upper = @lower * 10
+    @answer = (1..@ore).bsearch do |i|
+      demand_fuel(i)
+      @answer > @ore
     end
+    @answer -= 1
   end
 
   def demand_fuel(quantity)
@@ -72,7 +68,6 @@ class Solution < Solution2019
     reactions['FUEL'].demand!(quantity)
     process_demands until all_demands_require_ore?
     process_demands(false)
-    @answer
   end
 
   def process_demands(exclude_ores = true)
