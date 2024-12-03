@@ -8,7 +8,8 @@ class Solution < Solution2024
   # override
   def additional_setup
     @answer = 0
-    @input = @input.map { |line| line.split.map(&:to_i) }
+    split_input
+    inputs_are_integers
     @lista = @input.map(&:first).sort
     @listb = @input.map(&:last).sort
   end
