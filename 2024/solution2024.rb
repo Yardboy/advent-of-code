@@ -33,6 +33,14 @@ class Solution2024
     end
   end
 
+  def split_input(delimiter: ' ')
+    @input = @input.map { |line| line.split(delimiter) }
+  end
+
+  def inputs_are_integers
+    @input = @input.map { |line| line.map(&:to_i) }
+  end
+
   def file_to_input(file)
     File.open(file, 'r') do |f|
       f.each_line do |line|

@@ -8,11 +8,12 @@ class Solution < Solution2024
   # override
   def additional_setup
     @answer = 0
+    split_input
+    inputs_are_integers
   end
 
   def process_input
-    @input.each do |report|
-      levels = report.split.map(&:to_i)
+    @input.each do |levels|
       if ascending_or_descending?(levels) && within_limits?(levels)
         @answer += 1
       end
