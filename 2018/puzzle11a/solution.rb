@@ -11,10 +11,10 @@ class Solution
   end
 
   def run!
-    read_input #:test
+    read_input # :test
     build_grid
     calculate_power_levels(@input)
-    find_max_subgrid(3,3)
+    find_max_subgrid(3, 3)
 
     puts "Input Lines: #{@input_lines}"
     puts "Answer: #{@answer}"
@@ -31,9 +31,7 @@ class Solution
             total += @grid[x + i][y + j]
           end
         end
-        if total > @answer[2]
-          @answer = [x, y, total]
-        end
+        @answer = [x, y, total] if total > @answer[2]
       end
     end
   end
@@ -46,16 +44,16 @@ class Solution
     end
   end
 
-  def power_level(x,y, serial_number)
+  def power_level(x, y, serial_number)
     rack_id = x + 10
-    (((rack_id * y) + serial_number) * rack_id).to_s.split('')[-3].to_i - 5
+    (((rack_id * y) + serial_number) * rack_id).to_s.chars[-3].to_i - 5
   end
 
   def build_grid
-    (@grid_size + 1).times { @grid << [nil] * (@grid_size + 1) }
+    (@grid_size + 1).times { @grid << ([nil] * (@grid_size + 1)) }
   end
 
-  def read_input type = nil
+  def read_input(type = nil)
     if type == :test
       read_test_input
     else
@@ -66,7 +64,7 @@ class Solution
 
   def read_test_input
     # raise NoTestInputError
-    #@input = 18
+    # @input = 18
     @input = 42
   end
 end

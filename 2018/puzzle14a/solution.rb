@@ -34,21 +34,19 @@ class RecipeList
 
   def move(recipe, steps)
     steps.abs.times do
-      if steps.positive?
-        recipe = recipe.next || @head
-      else
-        recipe = recipe.prev || @tail
-      end
+      recipe = if steps.positive?
+                 recipe.next || @head
+               else
+                 recipe.prev || @tail
+               end
     end
     recipe
   end
 
   def to_s
     nodes = [@head]
-    while nodes.last.next
-      nodes << nodes.last.next
-    end
-    puts nodes.map { |node| node.value }.join(' ')
+    nodes << nodes.last.next while nodes.last.next
+    puts nodes.map(&:value).join(' ')
   end
 end
 
@@ -64,14 +62,12 @@ class Solution
   end
 
   def run!
-    read_input #:test
+    read_input # :test
 
     @elf1 = add_recipe(3)
     @elf2 = add_recipe(7)
 
-    while @list.count < @input + 10
-      add_new_recipes
-    end
+    add_new_recipes while @list.count < @input + 10
 
     10.times do
       @target = @target.next
@@ -92,30 +88,28 @@ class Solution
   end
 
   def new_recipe_values
-    (@elf1.value + @elf2.value).to_s.split('').map(&:to_i)
+    (@elf1.value + @elf2.value).to_s.chars.map(&:to_i)
   end
 
   def add_recipe(value)
     recipe = @list.add_recipe(value)
-    if @list.count == @input
-      @target = recipe
-    end
+    @target = recipe if @list.count == @input
     recipe
   end
 
-  def read_input type = nil
+  def read_input(type = nil)
     if type == :test
       read_test_input
     else
-      @input = 306281
+      @input = 306_281
     end
   end
 
   def read_test_input
     # raise NoTestInputError
-    #@input = 9
-    #@input = 5
-    #@input = 18
+    # @input = 9
+    # @input = 5
+    # @input = 18
     @input = 2018
   end
 end

@@ -1,0 +1,51 @@
+#################################
+# stage: install system         #
+#################################
+FROM ruby:3.3.6-alpine AS build
+ENV APPNAME advent
+
+LABEL app-name=${APPNAME}
+
+# Set the build args and env vars for this stage
+ENV APPHOME /$APPNAME
+ENV LANG C.UTF-8
+ENV BUNDLE_PATH $APPHOME/vendor/bundle
+
+RUN apk add --update alpine-sdk build-base \
+    && rm -rf /var/cache/apk/*
+
+WORKDIR $APPHOME
+
+# Copy app to container
+COPY . $APPHOME
+
+#################################
+# stage: dev/test environment   #
+#################################
+FROM build AS development
+ENV APPNAME advent
+
+# Set the build args and env vars for this stage
+ENV APPHOME /$APPNAME
+ENV LANG C.UTF-8
+
+ARG APPUID=1000
+ARG APPGID=1000
+
+WORKDIR $APPHOME
+
+# Install necessary development packages
+RUN apk update && apk add --update \
+    # Add convenience packages
+    bash bash-completion git vim \
+    # Create application user
+    && addgroup --system --gid $APPGID $APPNAME \
+    && adduser --system --uid $APPUID --ingroup $APPNAME $APPNAME \
+    && echo 'IRB.conf[:USE_MULTILINE] = false' > /home/$APPNAME/.irbrc \
+    && echo 'gem: --no-document' > ~/.gemrc
+
+# Copy the app from prior build stage
+COPY --chown=$APPNAME:$APPNAME --from=build $APPHOME $APPHOME
+
+# As appuser for rest of build
+USER $APPNAME

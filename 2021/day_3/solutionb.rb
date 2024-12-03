@@ -7,14 +7,14 @@ class Solution < Solution2021
 
   # override
   def additional_setup
-    @input = @input.map { |line| line.split('').map(&:to_i) }
+    @input = @input.map { |line| line.chars.map(&:to_i) }
     @tracker = []
     @answer = 0
   end
 
   def process_input
-    oxygen = filter_data(:find_most_common).join('')
-    co2 = filter_data(:find_least_common).join('')
+    oxygen = filter_data(:find_most_common).join
+    co2 = filter_data(:find_least_common).join
 
     @answer = oxygen.to_i(2) * co2.to_i(2)
   end
@@ -47,5 +47,5 @@ class Solution < Solution2021
   end
 end
 
-Solution.new.run!  testmode: false
+Solution.new.run! testmode: false
 # 2817661

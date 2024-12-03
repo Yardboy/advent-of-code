@@ -40,11 +40,11 @@ class Circle
 
   def move(steps)
     steps.abs.times do
-      if steps.positive?
-        @current = @current.next || @head
-      else
-        @current = @current.prev || @tail
-      end
+      @current = if steps.positive?
+                   @current.next || @head
+                 else
+                   @current.prev || @tail
+                 end
     end
   end
 
@@ -56,10 +56,14 @@ class Circle
 
   def to_s
     nodes = [@head]
-    while nodes.last.next
-      nodes << nodes.last.next
-    end
-    puts nodes.map { |node| node == @current ? "(#{node.prev ? node.prev.value : '-'}:#{node.value}:#{node.next ? node.next.value : '-'})" : "#{node.prev ? node.prev.value : '-'}:#{node.value}:#{node.next ? node.next.value : '-'}" }.join(' ')
+    nodes << nodes.last.next while nodes.last.next
+    puts nodes.map { |node|
+      if node == @current
+        "(#{node.prev ? node.prev.value : '-'}:#{node.value}:#{node.next ? node.next.value : '-'})"
+      else
+        "#{node.prev ? node.prev.value : '-'}:#{node.value}:#{node.next ? node.next.value : '-'}"
+      end
+    }.join(' ')
   end
 end
 
@@ -79,13 +83,13 @@ class Solution
   end
 
   def run!
-    read_input #:test
-    @input = @input.split(' ')
+    read_input # :test
+    @input = @input.split
     @input[0].to_i.times { @players << 0 }
     @current_player = @players.size - 1
 
     i = 1
-    while i <= @input[6].to_i do
+    while i <= @input[6].to_i
       play_marble(i)
       i += 1
     end
@@ -103,7 +107,7 @@ class Solution
     else
       play_regular(val)
     end
-    #puts @circle.to_s
+    # puts @circle.to_s
   end
 
   def play_regular(val)
@@ -120,7 +124,7 @@ class Solution
   end
 
   def special?(marble)
-    !marble.zero? && marble % 23 == 0
+    !marble.zero? && (marble % 23).zero?
   end
 
   def next_player
@@ -128,7 +132,7 @@ class Solution
     @current_player = 0 if @current_player == @players.size
   end
 
-  def read_input type = nil
+  def read_input(type = nil)
     if type == :test
       read_test_input
     else
@@ -138,12 +142,12 @@ class Solution
 
   def read_test_input
     # raise NoTestInputError
-    @input = "9 players; last marble is worth 25 points"
-    #@input = "10 players; last marble is worth 1618 points"
-    #@input = "13 players; last marble is worth 7999 points"
-    #@input = "17 players; last marble is worth 1104 points"
-    #@input = "21 players; last marble is worth 6111 points"
-    #@input = "30 players; last marble is worth 5807 points"
+    @input = '9 players; last marble is worth 25 points'
+    # @input = "10 players; last marble is worth 1618 points"
+    # @input = "13 players; last marble is worth 7999 points"
+    # @input = "17 players; last marble is worth 1104 points"
+    # @input = "21 players; last marble is worth 6111 points"
+    # @input = "30 players; last marble is worth 5807 points"
   end
 end
 

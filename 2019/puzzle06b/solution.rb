@@ -63,7 +63,7 @@ class Tree
   end
 
   def update_children(parent)
-    children_for_node(parent).each do |_id, child|
+    children_for_node(parent).each_value do |child|
       child.update_orbits
       update_children(child)
     end

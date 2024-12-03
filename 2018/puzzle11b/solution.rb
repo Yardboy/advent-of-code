@@ -1,5 +1,5 @@
 #!/usr/local/bin/ruby
-  # takes a couple minutes to run, could better, I'm sure
+# takes a couple minutes to run, could better, I'm sure
 class Solution
   class UnknownActionError < StandardError; end
   class NoTestInputError < StandardError; end
@@ -12,7 +12,7 @@ class Solution
   end
 
   def run!
-    read_input #:test
+    read_input # :test
     build_grid
     calculate_power_levels(@input)
     1.upto(300) { |i| calculate_subgrids(i) }
@@ -32,9 +32,7 @@ class Solution
           total += @grid[x + i][y + subgrid_size - 1][0]
         end
         @grid[x][y][1] = total
-        if total > @answer[2]
-          @answer = [x, y, total, subgrid_size]
-        end
+        @answer = [x, y, total, subgrid_size] if total > @answer[2]
       end
     end
   end
@@ -47,16 +45,16 @@ class Solution
     end
   end
 
-  def power_level(x,y, serial_number)
+  def power_level(x, y, serial_number)
     rack_id = x + 10
-    (((rack_id * y) + serial_number) * rack_id).to_s.split('')[-3].to_i - 5
+    (((rack_id * y) + serial_number) * rack_id).to_s.chars[-3].to_i - 5
   end
 
   def build_grid
-    (@grid_size + 1).times { @grid << [[nil, nil]] * (@grid_size + 1) }
+    (@grid_size + 1).times { @grid << ([[nil, nil]] * (@grid_size + 1)) }
   end
 
-  def read_input type = nil
+  def read_input(type = nil)
     if type == :test
       read_test_input
     else
@@ -68,7 +66,7 @@ class Solution
   def read_test_input
     # raise NoTestInputError
     @input = 18
-    #@input = 42
+    # @input = 42
   end
 end
 

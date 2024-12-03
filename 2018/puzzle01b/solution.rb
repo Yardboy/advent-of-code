@@ -9,11 +9,12 @@ class Solution
   end
 
   def run!
-    while true
+    loop do
       read_input if @input.empty?
       i = @input.shift
       @value += i
       break if @frequencies.include?(@value)
+
       @frequencies << @value
     end
     puts @value

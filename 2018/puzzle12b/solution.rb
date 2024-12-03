@@ -16,12 +16,12 @@ class Solution
   end
 
   def run!
-    read_input #:test
+    read_input # :test
     @input.delete_if { |i| i.strip == '' }
     parse_input
 
     count = 0
-    while @i < 1_000 do
+    while @i < 1_000
       @last = @answer
       pad_pots
       next_generation
@@ -30,6 +30,7 @@ class Solution
       p = pattern
       count += 1 if p == @pattern
       break if count > 20
+
       @pattern = p
     end
 
@@ -40,7 +41,7 @@ class Solution
     # so you can compute the answer by figuring the number of steps left times
     # the per step delta plus the last answer
 
-    @answer = (50_000_000_000 - @i) * (@answer - @last) + @answer
+    @answer = ((50_000_000_000 - @i) * (@answer - @last)) + @answer
     puts "Answer: #{@answer}"
   end
 
@@ -48,12 +49,8 @@ class Solution
 
   def pattern
     x = @pots.dup
-    while x.first == '.'
-      x.shift
-    end
-    while x.last == '.'
-      x.pop
-    end
+    x.shift while x.first == '.'
+    x.pop while x.last == '.'
     x.join
   end
 
@@ -80,16 +77,15 @@ class Solution
       @pots.unshift('.')
       @offset += 1
     end
-    while @pots[-3..-1].any? { |x| x == '#' }
-      @pots << '.'
-    end
+    @pots << '.' while @pots[-3..].any? { |x| x == '#' }
   end
 
   def parse_input
     @input.each do |line|
       next if line.strip == ''
+
       if line.include?('initial')
-        line.split(':').last.strip.split('').each do |x|
+        line.split(':').last.strip.chars.each do |x|
           @pots << x
         end
       else
@@ -99,7 +95,7 @@ class Solution
     end
   end
 
-  def read_input type = nil
+  def read_input(type = nil)
     if type == :test
       read_test_input
     else

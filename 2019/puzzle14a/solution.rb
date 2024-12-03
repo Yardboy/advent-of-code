@@ -42,7 +42,7 @@ class Reaction
   end
 
   def parse_item(item)
-    item = item.strip.split(' ')
+    item = item.strip.split
     Chemical.new(item[1], item[0].to_i)
   end
 end

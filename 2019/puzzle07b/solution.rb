@@ -19,7 +19,7 @@ class Solution < Solution2019
   end
 
   def run_amps(values)
-    phases = format('%05i', values).split('').map(&:to_i)
+    phases = format('%05i', values).chars.map(&:to_i)
     return 0 if phases.uniq.size != 5 || phases.any? { |n| n < 5 }
 
     clear_amps

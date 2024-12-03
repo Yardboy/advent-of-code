@@ -21,7 +21,7 @@ class Solution < Solution2021
       call_number(number)
       check_for_in_play
       last_winner = @in_play if @in_play.size == 1
-      break if @in_play.size.zero?
+      break if @in_play.empty?
     end
 
     @answer = last_winner.first.total * @current
@@ -78,7 +78,7 @@ class BingoCard
 
   def parse_lines
     @lines.each_with_index do |line, row|
-      line.split(' ').each_with_index do |number, col|
+      line.split.each_with_index do |number, col|
         @board[row.to_i][col.to_i] = @save_board[row.to_i][col.to_i] = number.to_i
       end
     end

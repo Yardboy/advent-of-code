@@ -1,24 +1,27 @@
-version: '3.7'
+x-default-volumes: &default-volumes
+  volumes:
+    - ../:/advent
+    - adventbundle:/advent/vendor/bundle
 
-services:
-  advent:
-    build:
-      context: ../
-    entrypoint: /app/docker/entrypoint.sh
-    container_name: "advent"
-    volumes:
-      - ../:/app
-      - advent_bundle:/bundle
-    env_file: ../.env
-    environment:
-      BUNDLE_PATH: /bundle
-      BUNDLE_SILENCE_ROOT_WARNING: 1
-
-  advent_bundle:
-    image: busybox
-    container_name: "advent_bundle"
-    volumes:
-      - advent_bundle:/bundle
+x-default-build-args: &default-build-args
+  args:
+    APPUID: ${APPUID}
+    APPGID: ${APPGID}
 
 volumes:
-  advent_bundle:
+  adventbundle:
+
+services:
+  adventweb:
+    container_name: 'adventweb'
+    tty: true
+    command: 'bin/dev'
+    build:
+      context: ../
+      dockerfile: Dockerfile.web
+      target: development
+      << : *default-build-args
+    << : *default-volumes
+    env_file: ../.env
+    tmpfs:
+      - /tmp

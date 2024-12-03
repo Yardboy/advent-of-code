@@ -13,6 +13,7 @@ class Board
   def take_turn(instructions)
     instructions.each_slice(3) do |posx, posy, type|
       @score = type and next if [posx, posy] == [-1, 0]
+
       ensure_board_size(posx, posy)
       update_board(posx, posy, type)
     end
@@ -21,7 +22,7 @@ class Board
   def draw
     display = "\n  #{ruler}\n"
     @tiles.each_with_index do |row, index|
-      display += "#{index % 10} #{row.map { |tile| char(tile) }.join('')} #{index % 10}\n"
+      display += "#{index % 10} #{row.map { |tile| char(tile) }.join} #{index % 10}\n"
     end
     display += "  #{ruler}\n"
     puts display
@@ -45,7 +46,7 @@ class Board
   end
 
   def ruler
-    @ruler ||= (0..@tiles.first.size - 1).map { |index| index % 10 }.join('')
+    @ruler ||= (0..@tiles.first.size - 1).map { |index| index % 10 }.join
   end
 end
 

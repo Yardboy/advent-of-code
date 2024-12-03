@@ -14,18 +14,16 @@ class Solution
   end
 
   def run!
-    read_input #:test
+    read_input # :test
 
     get_next_node
 
-    until @input.empty? do
-      process_node unless @current.nil?
-    end
+    process_node unless @current.nil? until @input.empty?
 
-    #display
+    # display
 
     puts "Input Lines: #{@input_lines}"
-    puts "Answer: #{sum_up(@data.last) }"
+    puts "Answer: #{sum_up(@data.last)}"
   end
 
   private
@@ -60,9 +58,7 @@ class Solution
       @data << @current
       @current = @stack.pop
       if @current
-        if @current[1] > 0
-          @current[5] << @data.last.dup
-        end
+        @current[5] << @data.last.dup if (@current[1]).positive?
         @current[4] -= 1
       end
     else
@@ -80,17 +76,17 @@ class Solution
     @current[4] = @current[1]
   end
 
-  def read_input type = nil
+  def read_input(type = nil)
     if type == :test
       read_test_input
     else
-      @input = File.read('input.txt').chomp.split(' ').map(&:to_i)
+      @input = File.read('input.txt').chomp.split.map(&:to_i)
     end
   end
 
   def read_test_input
     # raise NoTestInputError
-    @input = "2 3 0 3 10 11 12 1 1 0 1 99 2 1 1 2".split(' ').map(&:to_i)
+    @input = '2 3 0 3 10 11 12 1 1 0 1 99 2 1 1 2'.split.map(&:to_i)
   end
 end
 

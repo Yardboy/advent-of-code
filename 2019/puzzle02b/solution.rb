@@ -25,7 +25,7 @@ class Solution < Solution2019
   def run_program(noun, verb)
     computer = Intcode::Computer.new(@input.dup)
     computer.run!(nil, @test)
-    @answer = 100 * noun + verb if computer.input.first == 19_690_720
+    @answer = (100 * noun) + verb if computer.input.first == 19_690_720
   end
 
   def update_input(noun, verb)

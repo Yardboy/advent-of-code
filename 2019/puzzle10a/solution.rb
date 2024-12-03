@@ -23,11 +23,11 @@ Path = Struct.new(:station, :asteroid) do
   end
 
   def slope
-    (deltay.to_f / deltax.to_f * -1.0).round(5)
+    (deltay.to_f / deltax * -1.0).round(5)
   end
 
   def signs
-    [deltay, deltax].map { |value| '++-'[value <=> 0] }.join('')
+    [deltay, deltax].map { |value| '++-'[value <=> 0] }.join
   end
 
   def quadrant
@@ -47,7 +47,7 @@ class Solution < Solution2019
   def additional_setup
     @asteroids = []
     @input.each_with_index do |line, row|
-      line.split('').each_with_index do |char, col|
+      line.chars.each_with_index do |char, col|
         @asteroids << Asteroid.new(col, row) if char == '#'
       end
     end
