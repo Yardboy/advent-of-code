@@ -58,11 +58,11 @@ module Intcode
     end
 
     def opcode_instruction
-      opcode[-2..-1].to_i
+      opcode[-2..].to_i
     end
 
     def opcode_modes
-      opcode[0..-3].split('').map(&:to_i).reverse
+      opcode[0..-3].chars.map(&:to_i).reverse
     end
 
     def move_pointer(value)

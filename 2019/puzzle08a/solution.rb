@@ -23,9 +23,7 @@ class Solution < Solution2019
 
   def summary
     @summary ||= layers.map do |layer|
-      layer.flatten.sort.chunk { |data| data }.each_with_object({}) do |(pixel, pixels), hsh|
-        hsh[pixel] = pixels.size
-      end
+      layer.flatten.sort.chunk { |data| data }.transform_values(&:size)
     end
   end
 
@@ -36,7 +34,7 @@ class Solution < Solution2019
   # override
   def read_input
     super
-    @input = @input.first.split('').map(&:to_i)
+    @input = @input.first.chars.map(&:to_i)
   end
 end
 

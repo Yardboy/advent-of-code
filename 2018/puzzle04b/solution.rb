@@ -11,9 +11,9 @@ class Solution
   end
 
   def run!
-    read_input #:test
+    read_input # :test
     count_minutes
-    count, minute, guard = find_sleepiest_guard_minute
+    _, minute, guard = find_sleepiest_guard_minute
 
     puts "Input Lines: #{@input_lines}"
     puts "Answer: #{guard.to_i * minute}"
@@ -28,7 +28,7 @@ class Solution
   def count_minutes
     guard = start = nil
     @input.each do |text|
-      date, time, action, key = parse_data(text)
+      _, time, action, key = parse_data(text)
       time = time.to_i
       case action.downcase
       when 'guard'
@@ -37,7 +37,7 @@ class Solution
       when 'falls'
         start = time
       when 'wakes'
-        (start..(time - 1)).each { |i| @guards[guard][i] += 1}
+        (start..(time - 1)).each { |i| @guards[guard][i] += 1 }
         start = nil
       else
         raise UnknownActionError
@@ -46,10 +46,10 @@ class Solution
   end
 
   def parse_data(text)
-    text.gsub(/[\[\]\#\:]/, '').split(' ')
+    text.gsub(/[\[\]\#\:]/, '').split
   end
 
-  def read_input type = nil
+  def read_input(type = nil)
     if type == :test
       read_test_input
     else

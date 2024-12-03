@@ -14,7 +14,7 @@ class Solution < Solution2019
 
   def process_input
     find_top_pixels
-    @answer = "\n" + @image.map { |row| row.join('') }.join("\n")
+    @answer = "\n#{@image.map(&:join).join("\n")}"
   end
 
   def find_top_pixels
@@ -47,7 +47,7 @@ class Solution < Solution2019
   # override
   def read_input
     super
-    @input = @input.first.split('').map(&:to_i)
+    @input = @input.first.chars.map(&:to_i)
   end
 end
 

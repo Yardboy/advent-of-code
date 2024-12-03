@@ -10,7 +10,7 @@ class Solution
   end
 
   def run!
-    read_input #:test
+    read_input # :test
     @answer = react_polymer(@input)
 
     puts "Input Lines: #{@input_lines}"
@@ -42,12 +42,12 @@ class Solution
     unit1 != unit2 && unit1.downcase == unit2.downcase
   end
 
-  def read_input type = nil
-    if type == :test
-      @input = test_input.split('')
-    else
-      @input = File.read('input.txt').chomp.split('')
-    end
+  def read_input(type = nil)
+    @input = if type == :test
+               test_input.chars
+             else
+               File.read('input.txt').chomp.chars
+             end
   end
 
   def test_input

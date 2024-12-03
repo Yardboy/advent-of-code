@@ -21,7 +21,7 @@ class Point
 
   def move(instruction)
     direction = instruction[0].downcase.to_sym
-    distance = instruction[1..-1].to_i
+    distance = instruction[1..].to_i
     change_position(direction, distance)
   end
 

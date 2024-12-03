@@ -25,23 +25,24 @@ Cart = Struct.new(:x, :y, :direction, :last) do
 
   private
 
-  def turn!(grid)
-    if last == 'r'
+  def turn!(_grid)
+    case last
+    when 'r'
       turn_left
-    elsif last == 'l'
+    when 'l'
       go_straight
-    elsif last == 's'
+    when 's'
       turn_right
     end
   end
 
   def turn_left
-    self.direction = { '<': 'v', 'v': '>', '>': '^', '^': '<' }[direction.to_sym]
+    self.direction = { '<': 'v', v: '>', '>': '^', '^': '<' }[direction.to_sym]
     self.last = 'l'
   end
 
   def turn_right
-    self.direction = { '<': '^', '^': '>', '>': 'v', 'v': '<' }[direction.to_sym]
+    self.direction = { '<': '^', '^': '>', '>': 'v', v: '<' }[direction.to_sym]
     self.last = 'r'
   end
 
@@ -54,7 +55,7 @@ Cart = Struct.new(:x, :y, :direction, :last) do
       '>': { '/': '^', '\\': 'v' },
       '<': { '/': 'v', '\\': '^' },
       '^': { '/': '>', '\\': '<' },
-      'v': { '/': '<', '\\': '>' }
+      v: { '/': '<', '\\': '>' }
     }
   end
 end
@@ -76,14 +77,14 @@ class Solution
   def run!
     read_input # :test
     parse_input
-    #display
+    # display
 
     until collision? || @moves > @stop_moves
       move_carts
       @moves += 1
     end
 
-    @answer = collisions.select { |k,v| v > 1 }.keys.first
+    @answer = collisions.select { |_k, v| v > 1 }.keys.first
 
     display
     puts "Answer: #{@answer}"
@@ -104,7 +105,10 @@ class Solution
   end
 
   def collisions
-    @carts.each_with_object({}) { |cart, hsh| hsh[cart.loc] ||= 0; hsh[cart.loc] += 1 }
+    @carts.each_with_object({}) do |cart, hsh|
+      hsh[cart.loc] ||= 0
+      hsh[cart.loc] += 1
+    end
   end
 
   def max_x
@@ -118,20 +122,20 @@ class Solution
   def display
     line = '     '
     @grid.first.each_with_index do |_, x|
-      if x % 100 == 0
-        line += (x/100).to_s
-      else
-        line += ' '
-      end
+      line += if (x % 100).zero?
+                (x / 100).to_s
+              else
+                ' '
+              end
     end
     puts line
     line = '     '
     @grid.first.each_with_index do |_, x|
-      if x % 10 == 0
-        line += (x/10).to_s[-1]
-      else
-        line += ' '
-      end
+      line += if (x % 10).zero?
+                (x / 10).to_s[-1]
+              else
+                ' '
+              end
     end
     puts line
     line = '     '
@@ -144,13 +148,13 @@ class Solution
       line = "#{'%3d' % y}: "
       row.each_with_index do |char, x|
         carts = @carts.select { |cart| cart.x == x && cart.y == y }
-        if carts.size == 0
-          line += "\033[37m#{char}\033[0m"
-        elsif carts.size == 1
-          line += "\033[30m\033[47m#{carts.first.direction}\033[0m"
-        else
-          line += "\033[37m\033[41mX\033[0m"
-        end
+        line += if carts.empty?
+                  "\033[37m#{char}\033[0m"
+                elsif carts.size == 1
+                  "\033[30m\033[47m#{carts.first.direction}\033[0m"
+                else
+                  "\033[37m\033[41mX\033[0m"
+                end
       end
       puts line
     end
@@ -163,13 +167,13 @@ class Solution
     @input.each do |line|
       x = 0
       @grid << []
-      line.split('').each do |char|
+      line.chars.each do |char|
         char == ' ' ? '.' : char
-        if char == '>' || char == '<'
+        if ['>', '<'].include?(char)
           new_cart(x, y, char)
           char = '-'
         end
-        if char == '^' || char == 'v'
+        if ['^', 'v'].include?(char)
           new_cart(x, y, char)
           char = '|'
         end
@@ -184,12 +188,12 @@ class Solution
     @carts << Cart.new(x, y, dir, 'r')
   end
 
-  def read_input type = nil
-    if type == :test
-      file = 'test-input.txt'
-    else
-      file = 'input.txt'
-    end
+  def read_input(type = nil)
+    file = if type == :test
+             'test-input.txt'
+           else
+             'input.txt'
+           end
     File.open(file, 'r') do |f|
       f.each_line do |line|
         @input << line.chomp
@@ -200,4 +204,3 @@ class Solution
 end
 
 Solution.new.run!
-

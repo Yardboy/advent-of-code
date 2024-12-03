@@ -1,5 +1,6 @@
 AllCops:
-  TargetRubyVersion: 2.6
+  TargetRubyVersion: 3.1
+  NewCops: enable
   Exclude:
     - app/assets/**/*
     - bin/**/*
@@ -8,18 +9,18 @@ AllCops:
     - lib/tasks/auto_annotate_models.rake
     - log/**/*
     - spec/**/*
+    - test/**/*
     - vendor/**/*
     - Gemfile
     - Capfile
     - node_modules/**/*
+    - 2018/**/*
+    - 2019/**/*
 
-Documentation:
+Style/Documentation:
   Enabled: false
 
-Metrics/LineLength:
-  Max: 120
-
-Metrics/ClassLength:
+Layout/LineLength:
   Max: 120
 
 Style/FrozenStringLiteralComment:
@@ -30,3 +31,18 @@ Style/AndOr:
 
 Layout/EndOfLine:
   EnforcedStyle: lf
+
+Metrics/ClassLength:
+  CountAsOne: ['array', 'hash', 'heredoc']
+
+Metrics/ModuleLength:
+  CountAsOne: ['array', 'hash', 'heredoc']
+
+Metrics/MethodLength:
+  CountAsOne: ['array', 'hash', 'heredoc']
+
+Metrics/CyclomaticComplexity:
+  Max: 10
+
+Metrics/AbcSize:
+  Max: 25

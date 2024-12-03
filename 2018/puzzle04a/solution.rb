@@ -11,7 +11,7 @@ class Solution
   end
 
   def run!
-    read_input #:test
+    read_input # :test
     count_minutes
     guard = find_sleepiest_guard
     minute = find_sleepiest_minute_for_guard(guard)
@@ -27,13 +27,13 @@ class Solution
   end
 
   def find_sleepiest_guard
-    @guards.map { |k, v| [k, v.sum] }.sort_by(&:last).last.first
+    @guards.map { |k, v| [k, v.sum] }.max_by(&:last).first
   end
 
   def count_minutes
     guard = start = nil
     @input.each do |text|
-      date, time, action, key = parse_data(text)
+      _, time, action, key = parse_data(text)
       time = time.to_i
       case action.downcase
       when 'guard'
@@ -42,7 +42,7 @@ class Solution
       when 'falls'
         start = time
       when 'wakes'
-        (start..(time - 1)).each { |i| @guards[guard][i] += 1}
+        (start..(time - 1)).each { |i| @guards[guard][i] += 1 }
         start = nil
       else
         raise UnknownActionError
@@ -51,10 +51,10 @@ class Solution
   end
 
   def parse_data(text)
-    text.gsub(/[\[\]\#\:]/, '').split(' ')
+    text.gsub(/[\[\]\#\:]/, '').split
   end
 
-  def read_input type = nil
+  def read_input(type = nil)
     if type == :test
       read_test_input
     else

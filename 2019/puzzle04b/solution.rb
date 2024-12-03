@@ -26,7 +26,7 @@ class Solution < Solution2019
   end
 
   def letter_counts(password)
-    password.split('').each_with_object({}) do |letter, hsh|
+    password.chars.each_with_object({}) do |letter, hsh|
       hsh[letter] ||= 0
       hsh[letter] += 1
     end

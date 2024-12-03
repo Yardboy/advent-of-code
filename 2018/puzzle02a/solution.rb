@@ -20,7 +20,10 @@ class Solution
   private
 
   def count_duplicates(text)
-    text.split('').each_with_object({}) { |char, hsh| hsh[char] ||= 0; hsh[char] += 1 }.select { |k,v| v == 2 || v == 3 }.values.uniq
+    text.chars.each_with_object({}) do |char, hsh|
+      hsh[char] ||= 0
+      hsh[char] += 1
+    end.select { |_k, v| [2, 3].include?(v) }.values.uniq
   end
 
   def read_input

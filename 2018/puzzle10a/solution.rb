@@ -23,14 +23,14 @@ class Solution
   end
 
   def run!
-    read_input #:test
+    read_input # :test
     set_initial_points
 
     i = 0
-    while i += 1 do
-      @points.each { |p| p.move }
+    while i += 1
+      @points.each(&:move)
       # when distance between max and min y of all points is < 10, then we have a message
-      break if check_distance < 10 || i == 100000
+      break if check_distance < 10 || i == 100_000
     end
 
     display
@@ -52,27 +52,25 @@ class Solution
     ymax = @points.map { |p| p.position[1] }.max
     # initiate output grid
     output = []
-    (ymax + 1).times { output << ['.'] * (xmax + 1) }
+    (ymax + 1).times { output << (['.'] * (xmax + 1)) }
     # populate output grid
     @points.each { |p| output[p.position[1]][p.position[0]] = '#' }
     # delete any rows that are all '.'
     output.delete_if { |o| o.uniq == ['.'] }
     # delete first column repeatedly until first column includes something other than '.'
-    while output.all? { |o| o[0] == '.' } do
-      output.each { |o| o.delete_at(0) }
-    end
+    output.each { |o| o.delete_at(0) } while output.all? { |o| o[0] == '.' }
     # display message
-    output.each { |o| puts o.join('') }
+    output.each { |o| puts o.join }
   end
 
   def set_initial_points
     @input.each do |line|
-      position, velocity = line.scan(/\<[^\>]*\>/).map { |coord| coord.gsub(/[\>\<\s]/, '').split(',').map(&:to_i) }
+      position, velocity = line.scan(/<[^\>]*>/).map { |coord| coord.gsub(/[\>\<\s]/, '').split(',').map(&:to_i) }
       @points << Point.new(position, velocity)
     end
   end
 
-  def read_input type = nil
+  def read_input(type = nil)
     if type == :test
       read_test_input
     else

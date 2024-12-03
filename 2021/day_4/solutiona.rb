@@ -76,7 +76,7 @@ class BingoCard
 
   def parse_lines
     @lines.each_with_index do |line, row|
-      line.split(' ').each_with_index do |number, col|
+      line.split.each_with_index do |number, col|
         @board[row.to_i][col.to_i] = @save_board[row.to_i][col.to_i] = number.to_i
       end
     end

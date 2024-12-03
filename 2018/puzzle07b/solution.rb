@@ -14,16 +14,16 @@ class Solution
   end
 
   def run!
-    read_input #:test
+    read_input # :test
     get_data
 
-    until all_steps_completed? do
+    until all_steps_completed?
       @timer ||= -1
       @timer += 1
       clear_completed_workers
       start_new_workers
       work_the_steps
-      #display # uncomment to see work pattern
+      # display # uncomment to see work pattern
     end
 
     puts "Input Lines: #{@input_lines}"
@@ -46,25 +46,26 @@ class Solution
 
   def start_new_workers
     @workers.each_with_index do |w, index|
-      if w.first.nil?
-        step = @data.select { |step, prereqs| prereqs.empty? }.map(&:to_a).flatten.sort.first
-        break if step.nil?
-        @workers[index] = [step, start_time_for(step)]
-        @data.delete(step)
-      end
+      next unless w.first.nil?
+
+      step = @data.select { |_step, prereqs| prereqs.empty? }.map(&:to_a).flatten.min
+      break if step.nil?
+
+      @workers[index] = [step, start_time_for(step)]
+      @data.delete(step)
     end
   end
 
   def clear_completed_workers
     @workers.each_with_index do |w, index|
-      if w.last == 0 && w.first
-        @completed << w.first
-        @data.each do |step, prereqs|
-          prereqs.delete(w.first)
-          @data[step] = prereqs
-        end
-        @workers[index] = [nil, 0]
+      next unless w.last.zero? && w.first
+
+      @completed << w.first
+      @data.each do |step, prereqs|
+        prereqs.delete(w.first)
+        @data[step] = prereqs
       end
+      @workers[index] = [nil, 0]
     end
   end
 
@@ -85,7 +86,7 @@ class Solution
     puts text.join('     ')
   end
 
-  def read_input type = nil
+  def read_input(type = nil)
     if type == :test
       read_test_input
     else
@@ -101,13 +102,13 @@ class Solution
   def read_test_input
     # raise NoTestInputError
     @input = [
-      ['C', 'A'],
-      ['C', 'F'],
-      ['A', 'B'],
-      ['A', 'D'],
-      ['B', 'E'],
-      ['D', 'E'],
-      ['F', 'E']
+      %w[C A],
+      %w[C F],
+      %w[A B],
+      %w[A D],
+      %w[B E],
+      %w[D E],
+      %w[F E]
     ]
   end
 end

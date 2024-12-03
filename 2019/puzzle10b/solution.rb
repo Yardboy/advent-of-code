@@ -23,11 +23,11 @@ Path = Struct.new(:station, :asteroid) do
   end
 
   def slope
-    (deltay.to_f / deltax.to_f * -1.0).round(5)
+    (deltay.to_f / deltax * -1.0).round(5)
   end
 
   def signs
-    [deltay, deltax].map { |value| '++-'[value <=> 0] }.join('')
+    [deltay, deltax].map { |value| '++-'[value <=> 0] }.join
   end
 
   def quadrant
@@ -47,7 +47,7 @@ class Solution < Solution2019
   def additional_setup
     @asteroids = []
     @input.each_with_index do |line, row|
-      line.split('').each_with_index do |char, col|
+      line.chars.each_with_index do |char, col|
         @asteroids << Asteroid.new(col, row) if char == '#'
       end
     end
@@ -57,13 +57,13 @@ class Solution < Solution2019
   def process_input
     @station, @paths = find_best_station[0..1]
     vaporize!
-    @answer = @vaporized[199][0] * 100 + @vaporized[199][1]
+    @answer = (@vaporized[199][0] * 100) + @vaporized[199][1]
   end
 
   def vaporize!
     sort_paths
     until @paths.all? { |_, asteroids| asteroids.empty? }
-      @paths.each do |_, asteroids|
+      @paths.each_value do |asteroids|
         @vaporized << asteroids.shift unless asteroids.empty?
       end
     end
@@ -79,7 +79,7 @@ class Solution < Solution2019
   end
 
   def sort_paths
-    @paths.each { |_, asteroids| asteroids.reverse! if asteroids.first.before?(@station) }
+    @paths.each_value { |asteroids| asteroids.reverse! if asteroids.first.before?(@station) }
     @paths = @paths.to_a.sort_by { |(slope, quadrant), _| [quadrant, slope] }.reverse
   end
 

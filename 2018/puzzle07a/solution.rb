@@ -12,16 +12,16 @@ class Solution
   end
 
   def run!
-    read_input #:test
+    read_input # :test
     get_data
 
-    until @data.empty? do
-      completed = @data.select { |step, prereqs| prereqs.empty? }.map(&:to_a).flatten.sort.first
+    until @data.empty?
+      completed = @data.select { |_step, prereqs| prereqs.empty? }.map(&:to_a).flatten.min
       @answers << completed
       @data.delete(completed)
       @data.each do |step, prereqs|
         prereqs.delete(completed)
-        @data[step] =  prereqs
+        @data[step] = prereqs
       end
     end
 
@@ -39,7 +39,7 @@ class Solution
     end
   end
 
-  def read_input type = nil
+  def read_input(type = nil)
     if type == :test
       read_test_input
     else
@@ -55,13 +55,13 @@ class Solution
   def read_test_input
     # raise NoTestInputError
     @input = [
-      ['C', 'A'],
-      ['C', 'F'],
-      ['A', 'B'],
-      ['A', 'D'],
-      ['B', 'E'],
-      ['D', 'E'],
-      ['F', 'E']
+      %w[C A],
+      %w[C F],
+      %w[A B],
+      %w[A D],
+      %w[B E],
+      %w[D E],
+      %w[F E]
     ]
   end
 end

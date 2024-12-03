@@ -11,16 +11,14 @@ class Solution
   end
 
   def run!
-    read_input #:test
+    read_input # :test
     cols = @input.map(&:first).max + 2
     rows = @input.map(&:last).max + 1
     @canvas = rows.times.map { [nil] * cols }
 
     @canvas.first.size.times.each do |x|
       @canvas.size.times.each do |y|
-        if @input.map { |point| distance(point, [x,y]) }.sum < 10000
-          @canvas[y][x] = '#'
-        end
+        @canvas[y][x] = '#' if @input.map { |point| distance(point, [x, y]) }.sum < 10_000
       end
     end
 
@@ -34,7 +32,7 @@ class Solution
     (point1[0] - point2[0]).abs + (point1[1] - point2[1]).abs
   end
 
-  def read_input type = nil
+  def read_input(type = nil)
     if type == :test
       read_test_input
     else
@@ -56,7 +54,7 @@ class Solution
       '3, 4',
       '5, 5',
       '8, 9'
-  ].map { |line| line.split(',').map { |x| x.strip.to_i } }
+    ].map { |line| line.split(',').map { |x| x.strip.to_i } }
   end
 end
 

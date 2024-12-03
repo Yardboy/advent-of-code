@@ -17,7 +17,7 @@ class Solution < Solution2019
 
   def process_input
     until computer.done?
-      new_color, direction = run_computer(current_color)[-2..-1]
+      new_color, direction = run_computer(current_color)[-2..]
       paint!(new_color)
       turn!(direction)
       move!(1)

@@ -16,7 +16,7 @@ class Solution < Solution2019
   def additional_setup
     @input = @input.first
     @size = 50
-    @board = Array.new(@size){ Array.new(@size, DONTKNOW) }
+    @board = Array.new(@size) { Array.new(@size, DONTKNOW) }
     @status = nil
     @curx = (@size / 2).ceil
     @cury = (@size / 2).ceil
@@ -120,7 +120,7 @@ class Solution < Solution2019
     display = "\n  #{ruler}\n"
     set_markers
     @board.each_with_index do |row, index|
-      display += "#{index % 10} #{Array(row).map(&:to_s).join('')} #{index % 10}\n"
+      display += "#{index % 10} #{Array(row).map(&:to_s).join} #{index % 10}\n"
     end
     display += "  #{ruler}\n"
     puts display
@@ -132,7 +132,7 @@ class Solution < Solution2019
   end
 
   def ruler
-    @ruler ||= (0..@board.first.size - 1).map { |index| index % 10 }.join('')
+    @ruler ||= (0..@board.first.size - 1).map { |index| index % 10 }.join
   end
 
   def run_computer!(input)

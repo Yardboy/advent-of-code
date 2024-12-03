@@ -9,7 +9,7 @@ class Solution < Solution2019
   def additional_setup
     @answer = 0
   end
-  
+
   def process_input
     @input.each do |mass|
       @answer += adjusted_fuel(calculate_fuel(mass))

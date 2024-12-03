@@ -7,7 +7,7 @@ class Solution < Solution2021
 
   # override
   def additional_setup
-    @input = @input.map { |line| line.split('').map(&:to_i) }
+    @input = @input.map { |line| line.chars.map(&:to_i) }
     @tracker = []
     @answer = 0
   end
@@ -24,11 +24,11 @@ class Solution < Solution2021
   end
 
   def gamma
-    @tracker.map { |digit| digit.positive? ? '1' : '0' }.join('')
+    @tracker.map { |digit| digit.positive? ? '1' : '0' }.join
   end
 
   def epsilon
-    @tracker.map { |digit| digit.negative? ? '1' : '0' }.join('')
+    @tracker.map { |digit| digit.negative? ? '1' : '0' }.join
   end
 end
 

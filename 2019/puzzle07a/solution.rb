@@ -19,7 +19,7 @@ class Solution < Solution2019
   end
 
   def run_amps(settings)
-    settings = format('%05i', settings).split('').map(&:to_i)
+    settings = format('%05i', settings).chars.map(&:to_i)
     return 0 if settings.uniq.size != 5 || settings.any? { |n| n > 4 }
 
     input2 = 0

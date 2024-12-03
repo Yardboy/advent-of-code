@@ -1,0 +1,25 @@
+#!/bin/bash
+
+export APPUID=$(id -u)
+export APPGID=$(id -g) 
+
+export COMPOSE_FILE=docker/docker-compose.yml
+SERVICE=advent
+
+case "$1" in
+  setup)
+    docker compose run --rm ${SERVICE}web bin/setup
+    ;;
+  bash)
+    docker compose run --service-ports --rm ${SERVICE}web /bin/bash
+    ;;
+  ash)
+    docker compose run --service-ports --rm ${SERVICE}web /bin/ash
+    ;;
+  build)
+    docker compose build --force-rm --no-cache
+    ;;
+  up)
+    docker compose up
+    ;;
+esac

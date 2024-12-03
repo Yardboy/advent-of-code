@@ -13,9 +13,11 @@ class Solution
 
   def run!
     initialize_fabric
-    read_input #:test
-    @input.each { |parms| mark_squares(parms) }
-    @input.each { |parms| check_for_overlaps(parms) }
+    read_input # :test
+    @input.each do |parms|
+      mark_squares(parms)
+      check_for_overlaps(parms)
+    end
 
     puts "Input Lines: #{@input_lines}"
     puts "Fabric Size: #{@max_cols} X #{@max_rows}"
@@ -45,7 +47,8 @@ class Solution
   def mark_squares(config)
     parms = parse_configs(config)
     raise MissingInputError if parms.any? { |parm| parm.nil? || parm.strip == '' }
-    key, left, top, width, height = parms.map(&:to_i)
+
+    _, left, top, width, height = parms.map(&:to_i)
 
     @max_cols = [@max_cols, left + width].max
     @max_rows = [@max_rows, top + height].max
@@ -64,16 +67,16 @@ class Solution
         (@max_cols - row.size).times { row << 0 }
       end
     end
-    if @fabric.size < @max_rows
-      (@max_rows - @fabric.size).times { @fabric << [0] * @max_cols }
-    end
+    return unless @fabric.size < @max_rows
+
+    (@max_rows - @fabric.size).times { @fabric << ([0] * @max_cols) }
   end
 
   def parse_configs(text)
-    text.gsub(/[\#\@\:]/, '').gsub(/[,x]/, ' ').squeeze(' ').split(' ')
+    text.gsub(/[\#\@\:]/, '').gsub(/[,x]/, ' ').squeeze(' ').split
   end
 
-  def read_input type = nil
+  def read_input(type = nil)
     if type == :test
       read_test_input
     else
@@ -89,9 +92,9 @@ class Solution
   def read_test_input
     # raise NoTestInputError
     @input = [
-      "#1 @ 1,3: 4x4",
-      "#2 @ 3,1: 4x4",
-      "#3 @ 5,5: 2x2"
+      '#1 @ 1,3: 4x4',
+      '#2 @ 3,1: 4x4',
+      '#3 @ 5,5: 2x2'
     ]
   end
 end
