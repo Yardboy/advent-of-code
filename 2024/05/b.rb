@@ -1,129 +1,53 @@
-#!/home/cayce/.rbenv/shims/ruby
+#!/usr/local/bin/ruby
 
 require '../solution2024.rb'
 
 class Solution < Solution2024
-  UP = '^'.freeze
-  DOWN = 'v'.freeze
-  LEFT = '<'.freeze
-  RIGHT = '>'.freeze 
-  OBSTACLE = '#'.freeze
-
   private
 
   # override
   def additional_setup
-    split_input(delimiter: '')
-    @rows = @input.size
-    @cols = @input.map(&:size).max
     @answer = 0
-    @current_position = []
-    @direction = nil
-    @visited = []
-    @route = []
-    @starting_position = []
-    @starting_direction = nil
+    @rules = @input.select { |line| line.include?('|') }.map { |line| line.split('|').map(&:to_i) }
+    @updates = @input.select { |line| line.include?(',') }.map { |line| [line.split(',').map(&:to_i), true] }
   end
 
   def process_input
-    find_starting_position
-    reset
-    get_patrol_route
-    @route = @visited[1..-2].map(&:first).uniq
-    @route.each_with_index do |route_position, index|
-      check_new_route(pos: route_position)
-    end
+    process_rules
+    count_correct_updates
   end
-  
-  def get_patrol_route
-    until out_of_map?
-      break if in_a_loop?
-      if look == OBSTACLE
-        turn
-      else
-        move
-      end
+
+  def count_correct_updates
+    @updates.select { |update| !update.last }.each do |update|
+      update = sort_update(update.first)
+      @answer += update[update.size / 2]
     end
   end
 
-  def in_a_loop?
-    @visited.count([@current_position, @direction]) > 1
-  end
-
-  def reset
-    @current_position = @starting_position
-    @direction = @starting_direction
-    @visited = [visit_current]
-    @obstacles = []
-  end
-
-  def visit_current
-    [@current_position, @direction]
-  end
-
-  def check_new_route(pos:)
-    reset
-    @input[pos.first][pos.last] = '#'
-    @current_obstacle = pos
-    get_patrol_route
-    @input[pos.first][pos.last] = '.'
-    @answer += 1 if in_a_loop?
-  end
-
-  def out_of_map?(pos: @current_position)
-    pos.first.negative? || pos.first > @rows - 1 ||
-      pos.last.negative? || pos.last > @cols - 1
-  end
-
-  def find_starting_position
-    @rows.times.each do |row|
-      @cols.times.each do |col|
-        @direction = @input[row][col]
-        if [UP, DOWN, LEFT, RIGHT].include?(@direction)
-          @starting_position = [row, col]
-          @current_position = [row, col]
-          @starting_direction = @direction
-          @visited << visit_current
+  def sort_update(update)
+    update.dup.each do |page|
+      (update.index(page) - 1).downto(0).each do |i|
+        if @rules.include?([page, update[i]])
+          update.insert(i, update.delete(page))
         end
-        break unless @current_position.empty?
       end
-      break unless @current_position.empty?
     end
+    update
   end
 
-  def move
-    @current_position = next_position
-    @visited << visit_current
-  end
-
-  def turn
-    @direction = {
-      UP => RIGHT,
-      RIGHT => DOWN,
-      DOWN => LEFT,
-      LEFT => UP
-    }[@direction]
-  end
-
-  def next_position
-    case @direction
-    when UP
-      [@current_position.first - 1, @current_position.last]
-    when DOWN
-      [@current_position.first + 1, @current_position.last]
-    when LEFT
-      [@current_position.first, @current_position.last - 1]
-    when RIGHT
-      [@current_position.first, @current_position.last + 1]
-    end    
-  end
-
-  def look
-    return nil if out_of_map?(pos: next_position)
-
-    @input[next_position.first][next_position.last]    
+  def process_rules
+    @rules.each do |early, late|
+      @updates.each_with_index do |update, index|
+        update = update.first
+        if update.include?(early) && update.include?(late)
+          if update.index(early) > update.index(late)
+            @updates[index][1] = false
+          end
+        end
+      end
+    end
   end
 end
 
 Solution.new.run! testmode: false
-# 1729
+# 7380
